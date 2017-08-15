@@ -22,16 +22,16 @@ import (
 	"sync"
 	"time"
 
+	"github.com/advoryanskiy/node_exporter/collector"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
-	"github.com/prometheus/node_exporter/collector"
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 const (
-	defaultCollectors = "arp,bcache,conntrack,cpu,diskstats,entropy,edac,exec,filefd,filesystem,hwmon,infiniband,ipvs,loadavg,mdadm,meminfo,netdev,netstat,sockstat,stat,textfile,time,uname,vmstat,wifi,xfs,zfs"
+	defaultCollectors = "cpu,diskstats,filesystem,meminfo,netdev,stat,time,uname"
 )
 
 var (
@@ -170,7 +170,7 @@ func main() {
 
 	// TODO(ts): Remove deprecated and problematic InstrumentHandler usage.
 	http.Handle(*metricsPath, prometheus.InstrumentHandler("prometheus", handler))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	/*http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`<html>
 			<head><title>Node Exporter</title></head>
 			<body>
@@ -178,7 +178,7 @@ func main() {
 			<p><a href="` + *metricsPath + `">Metrics</a></p>
 			</body>
 			</html>`))
-	})
+	})*/
 
 	log.Infoln("Listening on", *listenAddress)
 	err = http.ListenAndServe(*listenAddress, nil)
