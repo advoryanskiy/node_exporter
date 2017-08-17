@@ -147,6 +147,7 @@ func (c *ovpnCollector) publishState(state, label string, ch chan<- prometheus.M
 			continue
 		}
 
+		parts := strings.Split(line, ",")
 		if strings.HasPrefix(parts[0], ">INFO") ||
 			strings.HasPrefix(parts[0], "END") ||
 			strings.HasPrefix(parts[0], ">CLIENT") {
