@@ -143,7 +143,10 @@ func (c *ovpnCollector) sendCommand(conn net.Conn, cmd string) (string, error) {
 
 func (c *ovpnCollector) publishState(state, label string, ch chan<- prometheus.Metric) error {
 	for _, line := range strings.Split(state, "\n") {
-		parts := strings.Split(line, ",")
+		if len(strings.TrimSpace(line)) == 0 {
+			continue
+		}
+
 		if strings.HasPrefix(parts[0], ">INFO") ||
 			strings.HasPrefix(parts[0], "END") ||
 			strings.HasPrefix(parts[0], ">CLIENT") {
