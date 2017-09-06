@@ -188,7 +188,10 @@ func (c *ovpnCollector) publishStats(stats, label string, ch chan<- prometheus.M
 	)
 
 	// parse received bytes count
-	bytesIn, err := strconv.Atoi(strings.Replace(parts[1], "bytesin=", "", -1))
+	bytesIn, err := strconv.ParseInt(
+		strings.Replace(parts[1], "bytesin=", "", -1),
+		10, 64,
+	)
 	if err != nil {
 		return err
 	}
@@ -201,9 +204,9 @@ func (c *ovpnCollector) publishStats(stats, label string, ch chan<- prometheus.M
 	)
 
 	// parse sent bytes count
-	bytesOut, err := strconv.Atoi(strings.TrimSpace(
+	bytesOut, err := strconv.ParseInt(strings.TrimSpace(
 		strings.Replace(parts[2], "bytesout=", "", -1),
-	))
+	), 10, 64)
 	if err != nil {
 		return err
 	}
